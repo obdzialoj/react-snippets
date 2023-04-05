@@ -17,7 +17,7 @@ export interface UseApiResponse<T> {
   request: (body?: { [key: string]: unknown }) => Promise<void>;
 }
 
-export default function useApi<T>({ url, requestType, headers, queryParams }: UseApiConfig): UseApiResponse<T> {
+export default function useApi<T>({ url, requestType, headers, queryParams, isBlob }: UseApiConfig): UseApiResponse<T> {
   const [data, setData] = useState<T>(null);
   const [blobData, setBlobData] = useState<Blob>(null);
   const [error, setError] = useState<string>(null);
@@ -68,7 +68,7 @@ export default function useApi<T>({ url, requestType, headers, queryParams }: Us
         requestUrl.searchParams.append(k, v.toString());
       });
     }
-    
+
     try {
       setLoading(true);
       setError(null);
@@ -89,7 +89,6 @@ export default function useApi<T>({ url, requestType, headers, queryParams }: Us
         const json: T = await response.json();
         setData(json);
       }
-      
     } catch (error) {
       console.log('error', error);
       setError(error.message);
@@ -98,5 +97,5 @@ export default function useApi<T>({ url, requestType, headers, queryParams }: Us
     }
   };
 
-  return { data, loading, error, request };
+  return { data, blobData, loading, error, request };
 }
