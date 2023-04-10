@@ -65,7 +65,9 @@ export default function useApi<T>({ url, requestType, headers, queryParams, isBl
 
     if (queryParams) {
       Object.entries(queryParams).forEach(([k, v]) => {
-        requestUrl.searchParams.append(k, v.toString());
+        if (v !== null) {
+          requestUrl.searchParams.append(k, v.toString());
+        }
       });
     }
 
